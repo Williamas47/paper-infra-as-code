@@ -29,6 +29,7 @@
     "@aws-cdk/core:target-partitions": [
       "aws",
       "aws-cn"
-    ]
+    ],
+    "FRONTEND_URL": "http://localhost:3000"
   }
 }
