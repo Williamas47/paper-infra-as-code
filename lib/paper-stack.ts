@@ -39,5 +39,7 @@ export class PaperStack extends Stack {
       }
     );
 
+    S3UploadsBucket.bucket.grantRead(getProfilesAndFilesContent.function);
+
   }
 }

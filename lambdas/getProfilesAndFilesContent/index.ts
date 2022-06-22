@@ -1,5 +1,5 @@
-import { Context, APIGatewayProxyResultV2 } from "aws-lambda";
 import * as sdk from "aws-sdk";
+import { Context, APIGatewayProxyResultV2 } from "aws-lambda";
 import { CommonPrefix } from "aws-sdk/clients/s3";
 
 const s3 = new sdk.S3();
@@ -70,8 +70,8 @@ export const handler = async (
     return {
       statusCode: 200,
       body: JSON.stringify({
-        message: "Success on dataSeed function",
-        matchingFolders,
+        message: "Success on searchMathingProfiles function",
+        usersContent,
       }),
     };
   } catch (err) {
