@@ -1,15 +1,18 @@
 import { Context, APIGatewayProxyResultV2 } from "aws-lambda";
 import * as sdk from "aws-sdk";
+import { CommonPrefix } from "aws-sdk/clients/s3";
 
 const s3 = new sdk.S3();
 
+const bucketName: string = process.env.UPLOADS_BUCKET as string;
+
 interface EventProps {
-  message: string;
-  matchingFolders: string[];
+  search: string;
+  queryStringParameters: { search: string };
 }
 
 interface UsersContentProps {
-  user: string;
+  user: string | null;
   uploadedFilesLength: number;
   profileUrl: string;
 }
@@ -19,20 +22,35 @@ export const handler = async (
   context: Context
 ): Promise<APIGatewayProxyResultV2> => {
   try {
-    const { matchingFolders } = event;
+    const query = event.queryStringParameters;
+
+    const { search } = query;
+    if (!search) throw new Error("No search query provided!");
+    const allFolders = await s3.listObjectsV2({ Bucket: bucketName }).promise();
+
+    if (!allFolders.CommonPrefixes?.length) {
+      throw new Error("No folders found!");
+    }
+    const matchingFolders = await Promise.all(
+      allFolders.CommonPrefixes.map((item: CommonPrefix) =>
+        item?.Prefix ? item.Prefix : null
+      )
+        .filter((el) => el?.match(search))
+        .filter((el) => el)
+    );
+
     console.log("received users", matchingFolders);
 
     if (!matchingFolders?.length) throw new Error("no Matching users received");
 
-    // const usersContent: UsersContentProps[] = [];
-    // for await (const user of matchingFolders){
     const usersContent: UsersContentProps[] = await Promise.all(
       matchingFolders.map(async (user) => {
         const params = {
           Bucket: process.env.UPLOADS_BUCKET as string,
           Delimiter: "/",
-          Prefix: user,
+          Prefix: user as string,
         };
+
         const result = await s3.listObjects(params).promise();
         if (!result?.Contents?.length)
           throw new Error(`No data found for user: ${user}`);
@@ -46,17 +64,22 @@ export const handler = async (
         };
       })
     );
-    console.log(usersContent);
+
+    console.log("usersContent", usersContent);
+
     return {
       statusCode: 200,
-      body: JSON.stringify({}),
+      body: JSON.stringify({
+        message: "Success on dataSeed function",
+        matchingFolders,
+      }),
     };
   } catch (err) {
-    console.log(err);
+    console.log("err", err);
     return {
       statusCode: 400,
       body: JSON.stringify({
-        message: "Error on getMatchingProfilesContent function",
+        message: "Error on searchMathingProfiles function",
         error: err,
       }),
     };
