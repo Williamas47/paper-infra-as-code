@@ -14,13 +14,15 @@ const Header: React.FC<{ authData: AuthTokens }> = ({
   const { logout } = useAuthFunctions();
   const router = useRouter();
   const currentUser = authData?.accessTokenData.username;
+  const placeholderProfilePic =
+  "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png";
   return (
     <HeaderElement>
       <Button onClick={() => router.push("/procurar")}>Procurar perfis</Button>
       <LeftSideButtons>
         <UserProfileButton onClick={() => router.push(`/perfil/${currentUser}`)}>
-          <img src="https://via.placeholder.com/25" alt="imagem de perfil" />
-          {currentUser}
+          <img src={placeholderProfilePic} width="25" height="25" alt="imagem de perfil" />
+          @{currentUser}
         </UserProfileButton>
         <Button onClick={() => logout()}>Sair</Button>
       </LeftSideButtons>

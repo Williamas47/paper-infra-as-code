@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 import { Image as ImageIcon, Search } from "@material-ui/icons";
 import {
   SearchSection,
@@ -9,23 +10,17 @@ import {
   ResultLeftSide,
   ResultRightSide,
 } from "./procurar.styles";
-import { fetchUsersData, SearchProfiles } from "./api/lambdaContent";
-import * as AWS from "aws-sdk";
-import { CommonPrefix } from "aws-sdk/clients/s3";
 
 interface SearchProfilesResponse {
   Prefix: string;
 }
+
 const Procurar = (): JSX.Element => {
   const [searchText, setSearchText] = React.useState<string>("");
   const [userResults, setUserResults] = React.useState([]);
   const handleSearch = async () => {
-    const result = await SearchProfiles(searchText);
-    console.log('result', result);
-     fetchUsersData(result as string[]);
-    // if (!result.length) return;
-
-    // setUserResults(result);
+    const result = await axios.get(`${process.env.PROFILE_SEARCH_LAMBDA_URL}?search=${searchText}`);
+    console.log(result);
   };
   console.log("userResults", userResults);
   return (

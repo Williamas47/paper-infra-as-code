@@ -31,6 +31,7 @@ export const UserProfileButton = styled(IconButton)`
     gap: 10px;
     & > img {
       border-radius: 50%;
+      border: 2px solid black;
     }
   }
   &:hover {
@@ -42,7 +43,9 @@ export const UserProfileButton = styled(IconButton)`
 export const Button = styled(MuiButton)`
   height: 100%;
   color: #e9eaec !important;
+  border: 1px solid white !important;
   &:hover {
+    border: 1px solid black !important;
     background-color: #fad02c !important;
     color: black !important;
   }

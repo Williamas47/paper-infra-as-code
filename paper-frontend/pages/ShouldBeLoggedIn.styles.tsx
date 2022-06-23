@@ -38,11 +38,11 @@ export const LeftSide = styled.div`
   }
 `;
 export const RightSide = styled.div`
-  // background-color: orange;
   width: 40vw;
   height: 100%;
 
-  background: rgba(255, 255, 255, 0.2);
+  // background: rgba(66, 149, 237, 0.3);
+  background: rgba(255, 255, 255, 0.6);
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
   backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.18);
@@ -53,12 +53,15 @@ export const RightSide = styled.div`
   padding: 10% 2%;
   text-align: center;
   box-sizing: border-box;
-  // justify-content: center;
 `;
 
 export const LoginContainer = styled.div`
   & > h5 {
     border-bottom: 3px solid black;
+  }
+  & > p{
+    width: 275px;
+    text-align: justify;
   }
   display: flex;
   align-items: center;
