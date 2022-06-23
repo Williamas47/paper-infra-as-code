@@ -47,15 +47,15 @@ export const ResultItem = styled.div`
   border-radius: 5px;
   padding: 10px 20px;
   box-sizing: border-box;
-  & > img {
-    border-radius: 50%;
-  }
 `;
 export const ResultLeftSide = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 10px;
+  & > img {
+    border-radius: 50%;
+  }
 `;
 export const ResultRightSide = styled.div`
   display: flex;
