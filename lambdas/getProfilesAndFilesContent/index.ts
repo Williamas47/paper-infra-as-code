@@ -55,7 +55,7 @@ export const handler = async (
           throw new Error(`No data found for user: ${user}`);
 
         return {
-          user: user,
+          user: user?.slice(0, -1) || '',
           uploadedFilesLength:
             result.Contents?.filter((item) => item.Key !== `${user}/profile`)
               .length || 0,
