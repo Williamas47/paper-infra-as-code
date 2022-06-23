@@ -26,8 +26,7 @@ export const handler = async (
 
     const { search } = query;
     if (!search) throw new Error("No search query provided!");
-    const allFolders = await s3.listObjectsV2({ Bucket: bucketName }).promise();
-
+    const allFolders = await s3.listObjectsV2({ Bucket: bucketName, Delimiter: "/" }).promise();
     if (!allFolders.CommonPrefixes?.length) {
       throw new Error("No folders found!");
     }
