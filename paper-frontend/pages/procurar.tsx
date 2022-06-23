@@ -16,9 +16,6 @@ interface UsersContentProps {
   uploadedFilesLength: number;
   profileUrl: string;
 }
-interface SearchProfilesResponse {
-  Prefix: string;
-}
 
 const Procurar = (): JSX.Element => {
   const router = useRouter();
@@ -65,50 +62,10 @@ const Procurar = (): JSX.Element => {
               </ResultLeftSide>
               <ResultRightSide>
                 <ImageIcon />
-                <p>8</p>
+                <p>{user?.uploadedFilesLength || 0}</p>
               </ResultRightSide>
             </ResultItem>
           ))}
-        {/* <ResultItem>
-          <ResultLeftSide>
-            <img src="https://via.placeholder.com/75" alt="" />
-            <p>@random_username</p>
-          </ResultLeftSide>
-          <ResultRightSide>
-            <ImageIcon />
-            <p>8</p>
-          </ResultRightSide>
-        </ResultItem>
-        <ResultItem>
-          <ResultLeftSide>
-            <img src="https://via.placeholder.com/75" alt="" />
-            <p>@random_username</p>
-          </ResultLeftSide>
-          <ResultRightSide>
-            <ImageIcon />
-            <p>2</p>
-          </ResultRightSide>
-        </ResultItem>
-        <ResultItem>
-          <ResultLeftSide>
-            <img src="https://via.placeholder.com/75" alt="" />
-            <p>@random_username</p>
-          </ResultLeftSide>
-          <ResultRightSide>
-            <ImageIcon />
-            <p>6</p>
-          </ResultRightSide>
-        </ResultItem>
-        <ResultItem>
-          <ResultLeftSide>
-            <img src="https://via.placeholder.com/75" alt="" />
-            <p>@random_username</p>
-          </ResultLeftSide>
-          <ResultRightSide>
-            <ImageIcon />
-            <p>0</p>
-          </ResultRightSide>
-        </ResultItem> */}
       </ResultsSection>
     </div>
   );

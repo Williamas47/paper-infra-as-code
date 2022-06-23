@@ -27,13 +27,20 @@ Auth.configure({
   },
 });
 
-
 function App({ Component, pageProps }: AppProps) {
   const { initialAuth } = pageProps;
   const auth = useAuth(initialAuth);
+  console.log(auth);
+  let localStorageAuth;
+  if (typeof window !== "undefined") {
+    if (auth) {
+      localStorage.setItem("USER_INFO", auth.accessTokenData.username);
+    }
+    localStorageAuth = localStorage.getItem("USER_INFO");
+  }
   return (
     <>
-      {auth && <Header {...pageProps} authData={auth} />}
+      {(auth || localStorageAuth) && <Header {...pageProps} authData={auth} />}
       <Component {...pageProps} />
     </>
   );
