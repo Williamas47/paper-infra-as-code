@@ -14,7 +14,7 @@ interface EventProps {
 interface UsersContentProps {
   user: string | null;
   uploadedFilesLength: number;
-  profileUrl: string;
+  profileUrl: string | null;
 }
 
 export const handler = async (
@@ -26,7 +26,9 @@ export const handler = async (
 
     const { search } = query;
     if (!search) throw new Error("No search query provided!");
-    const allFolders = await s3.listObjectsV2({ Bucket: bucketName, Delimiter: "/" }).promise();
+    const allFolders = await s3
+      .listObjectsV2({ Bucket: bucketName, Delimiter: "/" })
+      .promise();
     if (!allFolders.CommonPrefixes?.length) {
       throw new Error("No folders found!");
     }
@@ -53,13 +55,19 @@ export const handler = async (
         const result = await s3.listObjects(params).promise();
         if (!result?.Contents?.length)
           throw new Error(`No data found for user: ${user}`);
-        const userName = user?.slice(0, -1) || ''
+        const userName = user?.slice(0, -1) || "";
         return {
           user: userName,
           uploadedFilesLength:
-            result.Contents?.filter((item) => item.Key !== `${userName}/profile`)
-              .length || 0,
-          profileUrl: `${process.env.S3_BASE_URL}/${userName}/profile`,
+            result.Contents?.filter(
+              (item) => item.Key !== `${userName}/profile`
+            ).length || 0,
+          profileUrl:
+            result.Contents?.filter(
+              (item) => item.Key === `${userName}/profile`
+            ).length > 0
+              ? `${process.env.S3_BASE_URL}/${userName}/profile`
+              : null,
         };
       })
     );
