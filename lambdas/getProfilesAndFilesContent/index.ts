@@ -53,13 +53,13 @@ export const handler = async (
         const result = await s3.listObjects(params).promise();
         if (!result?.Contents?.length)
           throw new Error(`No data found for user: ${user}`);
-
+        const userName = user?.slice(0, -1) || ''
         return {
-          user: user?.slice(0, -1) || '',
+          user: userName,
           uploadedFilesLength:
-            result.Contents?.filter((item) => item.Key !== `${user}/profile`)
+            result.Contents?.filter((item) => item.Key !== `${userName}/profile`)
               .length || 0,
-          profileUrl: `${process.env.S3_BASE_URL}/${user}/profile`,
+          profileUrl: `${process.env.S3_BASE_URL}/${userName}/profile`,
         };
       })
     );
